@@ -103,7 +103,7 @@ void Pixy_Align()
     
 }
 
-void Pixy_finetune() {
+void Pixy_finetune() { //taken for testing purposes from @Navigation-and-Pathfinding-codes (will return)
     
     Serial.println("------------||FINE TUNE IN PROGRESS||-----------");
     Serial.println("-------------------------------------------------");
@@ -134,7 +134,7 @@ void Pixy_finetune() {
     
 }
 
-void get_coordinates()
+void get_coordinates() //see Pixy_align
 {
     
     int blocks = pixy.getBlocks(17);
