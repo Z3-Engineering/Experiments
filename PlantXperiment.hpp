@@ -5,19 +5,40 @@
 //  Created by Shai Sabaroche on 2/6/17.
 //
 //
+#include <StandardCplusplus.h>
+#include <system_configuration.h>
+#include <unwind-cxx.h>
+#include <utility.h>
+#include <vector>
+//#include <Math.h>
+#include <iostream>
+#include <stdio.h>
 
 #ifndef PlantXperiment_hpp
 #define PlantXperiment_hpp
-
-#include <stdio.h>
-
 #endif /* PlantXperiment_hpp */
+
+using namespace std;
+
 Pixy pixy; //create global instance of Pixy
 
 //intialisation of a crucial variables with epononymous purposes
+int blue=1;
+int red=2;
+int green=3;
+int yellow=4;
+int brown=5;
+int bluegreen=13;
+int redbrown=25;
+int yellowred=42;
+int bluered=12;
+vector<char> resourceNames;
+resourceNames.push_back('W');
+resourceNames.push_back('C');
+resourceNames.push_back('I');
 static const int cornerColors[4] = {blue, red ,green, yellow}; //change later to signatures
 static const int roboColors= brown; //color markers on robots
-static const int resourceColors[3]={bluegreen, redbrown, yelloworange};//water, CO2, light
+static const int resourceColors[3]={bluegreen, redbrown, yellowred};//water, CO2, light
 static const int markerColor = bluered; //wall counter colors
 int startCorner=0;
 int endCorner=0;
@@ -31,6 +52,29 @@ const char colorCombo [4][4]=
 }
 
 pixySignatures[8]={markerColor, counterColors[0], counterColors[1], counterColors[2], counterColors[3], roboColors[1],roboColors[2], roboColors[3],startCorner,endCorner};
+
+void findResources(){
+    Serial.println("Looking for resources...");
+    if (anyCollision(10)==false){
+    motospd(20,20,20);
+    int blocks=pixy.getBlocks(17);
+    if (pixy.blocks[0].signature==bluegreen||redbrown||yellowred){
+        int temp=pixy.block[0].signature;
+        resourceNames
+        Serial.println("Found a Resource");
+        Pixy_Align();
+        wheel_speed(40,0);
+        Pixy_Align();
+        
+    }
+    }
+        else{
+        Serial.println("Collision will occur if movement is continued");
+        }
+            
+        
+
+
 
 void pixyCheck(){
 int i=0;
