@@ -32,13 +32,18 @@ int i=0;
 
 int wallCount(){
     wheel_speeds(40,90);
-    if(pixy.blocks[0].signature==markerColor)//Pixy read the corner at which it is intially aligned
-    {
+    if (pixy.blocks[0].signature==markerColor){//Pixy read the corner at which it is intially aligned
         wallCounter+=1;
     }
-    else if (pixy.blocks[0].signature==cornerColors){
+    else if (pixy.blocks[0].signature==cornerColors[0]||cornerColors[1]||cornerColors[2]||cornerColors[3]){
         motospeed(0,0,0);
         pixyCheck();
+    }
+    else {
+        Serial.println("Error detected, no color found; I dont know what to do...")
+        if (anyCollision(10)){
+            motospeed(0,0,0);
+            
     }
 }   
 
