@@ -53,6 +53,9 @@ const char colorCombo [4][4]=
 
 pixySignatures[8]={markerColor, counterColors[0], counterColors[1], counterColors[2], counterColors[3], roboColors[1],roboColors[2], roboColors[3],startCorner,endCorner};
 
+    
+
+
 void findResources(){
     Serial.println("Looking for resources...");
     if (anyCollision(10)==false){
@@ -62,16 +65,27 @@ void findResources(){
         int temp=pixy.block[0].signature;
         resourceNames
         Serial.println("Found a Resource");
-        Pixy_Align();
         wheel_speed(40,0);
+        if(anyCollision(10)==true){
+        motospd(0,0,0);
+        }
         Pixy_Align();
-        
+        rotate(180);
+        int blocks=pixy.getBlocks(17);
+        if (pixy.block[0].signature==markerColor)
+        wheel_speed(40,0);
+        if(anyCollision(10)==true){
+            motospd(0,0,0);
+        }
+        Pixy_Align();
+        wheel_speed(40,90);
+        wallCount();
     }
     }
         else{
         Serial.println("Collision will occur if movement is continued");
         }
-
+}
 void pixyCheck(){
 int i=0;
     while (i<4){
