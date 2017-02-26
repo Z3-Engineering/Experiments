@@ -22,7 +22,7 @@ int i=0;
         }
         else if (pixy.blocks[0].signature!=cornerColors[i]){            //if its not a corner color
             Serial.println("Searching for Corner Colour \n Rotating CounterClockwise \n");
-            motospd(20,20,20);                                          //rotate
+            motospd(40,40,40);                                          //rotate
             delay(rotation_update_delay);
             pixyCheck();                                     //run through pixyCheck again to see if corner color
         }
@@ -31,13 +31,16 @@ int i=0;
 }
 
 int wallCount(){
-    moveLeft();
-    motospd(0,0,0); //change later***********************************************************************
+    wheel_speeds(40,90);
     if(pixy.blocks[0].signature==markerColor)//Pixy read the corner at which it is intially aligned
     {
         wallCounter+=1;
     }
-}   //within wallCount or moveLeft, should include stop movement when sees corner color
+    else if (pixy.blocks[0].signature==cornerColors){
+        motospeed(0,0,0);
+        pixyCheck();
+    }
+}   
 
 void Pixy_Align()
 {
