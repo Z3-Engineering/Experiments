@@ -16,8 +16,9 @@ Pixy pixy; //create global instance of Pixy
 
 //intialisation of a crucial variables with epononymous purposes
 static const int cornerColors[4] = {blue, red ,green, yellow}; //change later to signatures
-static const int roboColors[3]= {purple, brown, orange};
-static const int markerColor = bluered;
+static const int roboColors= brown; //color markers on robots
+static const int resourceColors[3]={bluegreen, redbrown, yelloworange};//water, CO2, light
+static const int markerColor = bluered; //wall counter colors
 int startCorner=0;
 int endCorner=0;
 int wallCounter=1;
