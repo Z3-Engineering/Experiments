@@ -23,23 +23,28 @@ using namespace std;
 Pixy pixy; //create global instance of Pixy
 
 //intialisation of a crucial variables with epononymous purposes
-int blue=1;
+int blue=1;     
 int red=2;
 int green=3;
 int yellow=4;
 int brown=5;
+int purple=6;
+int orange=7;
+int pink=8;
 int bluegreen=13;
-int redbrown=25;
-int yellowred=42;
-int bluered=12;
+int greenred=32;
+int redyellow=24;
+int yellowblue=41;
+
 vector<char> resourceNames;
 resourceNames.push_back('W');
 resourceNames.push_back('C');
 resourceNames.push_back('I');
+static const int wallColors[4]={bluegreen,greenred,redyellow,yellowblue};
 static const int cornerColors[4] = {blue, red ,green, yellow}; //change later to signatures
 static const int roboColors= brown; //color markers on robots
-static const int resourceColors[3]={bluegreen, redbrown, yellowred};//water, CO2, light
-static const int markerColor = bluered; //wall counter colors
+static const int resourceColors[3]={purple, orange, pink};//water, CO2, light
+
 int startCorner=0;
 int endCorner=0;
 int wallCounter=1;
