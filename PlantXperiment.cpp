@@ -7,7 +7,7 @@
 //
 
 #include "PlantXperiment.hpp"
-#include "SPI.h"
+#include "SPI.h"    //hi
 #include "Pixy.h"
 
 Pixy pixy; //create global instance of Pixy
