@@ -22,6 +22,7 @@ using namespace std;
 
 Pixy pixy; //create global instance of Pixy
 
+
 //intialisation of a crucial variables with epononymous purposes
 int blue=1;     
 int red=2;
@@ -48,13 +49,13 @@ static const int resourceColors[3]={purple, orange, pink};//water, CO2, light
 int startCorner=0;
 int endCorner=0;
 int wallCounter=1;
-const char colorCombo [4][4]=
-{
-    {'BY','RY','GY', '0'},
-    {'BG','RG', '0','YG'},
-    {'BR', '0','GR','YR'},
-    { '0','RB','GB','YB'}
-}
+// const char colorCombo [4][4]=
+// {
+//     {'BY','RY','GY', '0'},
+//     {'BG','RG', '0','YG'},
+//     {'BR', '0','GR','YR'},
+//     { '0','RB','GB','YB'}
+// }
 
 pixySignatures[8]={markerColor, counterColors[0], counterColors[1], counterColors[2], counterColors[3], roboColors[1],roboColors[2], roboColors[3],startCorner,endCorner};
 
@@ -109,11 +110,17 @@ int i=0;
     }
 }
 
+
 int wallCount(){
     if(anyCollision==false){
         wheel_speeds(40,90);
-        if (pixy.blocks[0].signature==markerColor){//Pixy read the corner to which it is intially aligned
+        if (pixy.blocks[0].signature==bluegreen||greenred||redyellow||yellowblue){//Pixy read the corner to which it is intially aligned
             wallCounter+=1;
+           for (int i; i<4;i++){
+               if (wallColors[i]==pixy.blocks[0].signature){
+                   
+                   
+               
         }
         else if (pixy.blocks[0].signature==cornerColors[0]||cornerColors[1]||cornerColors[2]||cornerColors[3]){
             motospeed(0,0,0);
