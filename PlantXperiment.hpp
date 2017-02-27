@@ -36,7 +36,7 @@ int bluegreen=13;
 int greenred=32;
 int redyellow=24;
 int yellowblue=41;
-
+list<int> dimension(2,0);
 vector<char> resourceNames;
 resourceNames.push_back('W');
 resourceNames.push_back('C');
@@ -60,14 +60,25 @@ int wallCounter=1;
 pixySignatures[8]={markerColor, counterColors[0], counterColors[1], counterColors[2], counterColors[3], roboColors[1],roboColors[2], roboColors[3],startCorner,endCorner};
 
     
+int whichWall(int Signature){
+    switch Signature{
+        case Signature==bluegreen||redyellow:
+            Serial.println('This is the x wall');
+            return 0;
+        case Signature==greenred||yellowblue:
+            Serial.println('This is the y wall');
+            return 1;
+    }
+}
 
+    
 
 void findResources(){
     Serial.println("Looking for resources...");
     if (anyCollision(10)==false){
     motospd(20,20,20);
     int blocks=pixy.getBlocks(17);
-    if (pixy.blocks[0].signature==bluegreen||redbrown||yellowred){
+    if (pixy.blocks[0].signature==purple||orange||pink){
         int temp=pixy.block[0].signature;
         resourceNames
         Serial.println("Found a Resource");
@@ -110,25 +121,31 @@ int i=0;
     }
 }
 
-
+int CurrentColor;
 int wallCount(){
     if(anyCollision==false){
         wheel_speeds(40,90);
         if (pixy.blocks[0].signature==bluegreen||greenred||redyellow||yellowblue){//Pixy read the corner to which it is intially aligned
             wallCounter+=1;
-           for (int i; i<4;i++){
+            int i=0;
+           while (i<4){
                if (wallColors[i]==pixy.blocks[0].signature){
-                   
-                   
-               
+                   CurrentColor==wallColors[i];
+                   break;
+               }
+               else {
+                   i++
+               }
+            }
         }
         else if (pixy.blocks[0].signature==cornerColors[0]||cornerColors[1]||cornerColors[2]||cornerColors[3]){
             motospeed(0,0,0);
             pixyCheck();
         }
         else {
-            ;
+               ;
         }
+        dimension(whichWall(CurrentColor))==wallCounter; 
     }
     else{
         motospeed(0,0,0);
