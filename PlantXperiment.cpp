@@ -1,20 +1,24 @@
 
 
 #include "PlantXperiment.h"
+#include <Arduino.h>
+#include <Pixy.h>
+
+
+Pixy pixy;
 
 int PlantXperiment::whichWall(int Signature){
-	switch Signature{
-		case Signature==bluegreen||redyellow:
+    int temp;
+    if(Signature==(bluegreen||redyellow)){
 			Serial.println('This is the x wall');
-			int temp=0;
-			break;
-		case Signature==greenred||yellowblue:
-			Serial.println('This is the y wall');
-			int temp=1;
-			break;
-			}
-		return temp;	
-		}
+                temp=0;
+    }
+    else if(Signature==(greenred||yellowblue)){
+        Serial.println('This is the y wall');
+            temp=1;
+    }
+		return temp;
+}
 		
 void PlantXperiment::findResources(){
 	Serial.println("Looking for resources...");
@@ -23,29 +27,29 @@ void PlantXperiment::findResources(){
 			int blocks=pixy.getBlocks(17);
 			if (pixy.blocks[0].signature==purple||orange||pink){
 				motospd(0,0,0);
-				int temp=pixy.block[0].signature;
+				int temp=pixy.blocks[0].signature;
 				for (int i;i<3;i++){
-					if (temp==resourceColors(i)){
-						Serial.println(resourceNames(i));
+					if (temp==resourceColors[i]){
+						Serial.println(resourceNames[i]);
 					}
 					else{
 						Serial.println("Still checking which resource was found");
 					}
 				}
 				Serial.println("Found a Resource");
-				wheel_speed(40,0);
+				wheel_speeds(40,0);
 			}
 		if(anyCollision(10)==true){
 			motospd(0,0,0);
 		}
 			Pixy_Align();
-			rotate(180);
-			int blocks=pixy.getBlocks(17);
+            rotate(180);
+			blocks=pixy.getBlocks(17);
 				for (int i; i<4; i++){
-					if (pixy.block[0].signature==wallColors(i)){
-						wheel_speed(40,0);
+					if (pixy.blocks[0].signature==wallColors[i]){
+						wheel_speeds(40,0);
 						Serial.println("I found ");
-						Serial.print(wallColorNames(i));
+						Serial.print(wallColorNames[i]);
 					}
 					else{
 						Serial.println("Still looking...");
@@ -53,12 +57,12 @@ void PlantXperiment::findResources(){
 					
 				}
 				Pixy_Align();
-				wheel_speed(40,90);
-				wallCount();
+				wheel_speeds(40,90);
+                wallCount();
+        }
 		else{
 			Serial.println("Collision will occur if movement is continued");
-		}
-	}
+        }
 }
 		
 void PlantXperiment::pixyCheck(){
@@ -79,8 +83,8 @@ void PlantXperiment::pixyCheck(){
 	}
 }
 
-int PlantXperiment::wallCount(){
-	if(anyCollision==false){
+void PlantXperiment::wallCount(){
+	if(anyCollision(10)==false){
 		wheel_speeds(40,90);
 		if (pixy.blocks[0].signature==bluegreen||greenred||redyellow||yellowblue){//Pixy read the corner to which it is intially aligned
 			wallCounter+=1;
@@ -91,27 +95,26 @@ int PlantXperiment::wallCount(){
 				   break;
 			   }
 			   else {
-				   i++
+                   i++;
 			   }
 			}
 		}
 		else if (pixy.blocks[0].signature==cornerColors[0]||cornerColors[1]||cornerColors[2]||cornerColors[3]){
-			motospeed(0,0,0);
+			motospd(0,0,0);
 			pixyCheck();
 		}
 		else {
 			   ;
 		}
-		dimension(whichWall(CurrentColor))=wallCounter; 
+		dimensions[whichWall(CurrentColor)]=wallCounter;
 	}
 	else{
-		motospeed(0,0,0);
+		motospd(0,0,0);
 		digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
 		delay(1000);                       // wait for a second
 		digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
 		delay(1000);
 	}
-	return dimension;
 }
 		
 void PlantXperiment::Pixy_Align(){
@@ -186,10 +189,10 @@ void PlantXperiment::get_coordinates(){
 }
 		
 void PlantXperiment::complexMove(int goalX, int goalY, float orientation){ //Robot winds up in a specified grid, facing a specified direction, measured in grid squares and degrees.  
-  translateCart(goalX, goalY); //Robot moves to a specified location
-  float dTheta = orientation - Compass;
-  Compass = orientation; 
-  rotate(dTheta); //Robot rotates to face a specified direction
+    translateCart(goalX, goalY); //Robot moves to a specified location
+    float dTheta = orientation - Compass;
+    Compass = orientation;
+    rotate(dTheta); //Robot rotates to face a specified direction
 }
 		
 void PlantXperiment::translatePolar(float azimuth, float destDistCm){
@@ -391,4 +394,49 @@ void PlantXperiment::motospd(int sp1,int sp2,int sp3){
 		  analogWrite(wheel_pwm[1],abs(sp2));
 		 analogWrite(wheel_pwm[2],abs(sp3));
 		}
-		
+void PlantXperiment::sonarInfoDisplay() {
+    Serial.println("Distance Display: ");
+    for (int i = 0; i < 4; i++) {
+        Serial.print("Sonar Pin ");
+        Serial.print(i);
+        Serial.print(" : ");
+        Serial.println(cm[i]);
+    }
+    delay(500);
+}
+
+void PlantXperiment::speedInfoDisplay() {
+    Serial.print("Speed Display: ");
+    for (int i = 0; i < 3; i++) {
+        Serial.print(wheel_speed[i]);
+        Serial.print("|");
+    }
+    Serial.println(" ");
+    Serial.println(" ");
+    delay(10);
+}
+
+void PlantXperiment::updateSonar() {
+    for (int i = 0; i < 4; i++) {
+        //cm[i]=sonar[i].ping_cm();
+        unsigned int uS = sonar[i].ping();
+        cm[i] = sonar[i].convert_cm(uS);
+        delay(100);
+        
+        //Serial.println(cm[i]);
+        
+        
+        
+    }
+}
+
+bool PlantXperiment::anyCollision(int distance_cm) { // check for a collision within a certain distance
+    updateSonar();                        // using the sonar in the front
+    sonarInfoDisplay();
+    for (int i = 0; i < 2; i++) {
+        if (cm[i] < distance_cm && cm[i] > 1) {
+            return true;
+        }
+    }
+    return false;
+}
