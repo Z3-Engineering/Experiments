@@ -82,8 +82,8 @@ void PlantXperiment::pixyCheck(){
 
 int PlantXperiment::wallCount(){
 	if(anyCollision==false){
-		wheel_speeds(40,90);
-		if (pixy.blocks[0].signature==bluegreen||greenred||redyellow||yellowblue){//Pixy read the corner to which it is intially aligned
+		unimatMoveStrict(5,0,0,1);	//1 corresponds to robot number 1 and should be changed for different robots
+		if (pixy.blocks[0].signature==bluegreen||greenred||redyellow||yellowblue){
 			wallCounter+=1;
 			int i=0;
 		   while (i<4){
